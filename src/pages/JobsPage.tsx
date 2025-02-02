@@ -2,9 +2,13 @@ import React from "react";
 import { Card } from "../components/Card";
 import { Job } from "../types";
 import { Building2, Heart, X } from "lucide-react";
+import { db } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 interface JobsPageProps {
   jobs: Job[];
+  savedJobs: Job[]; // Añadimos la propiedad savedJobs
   currentIndex: number;
   loading: boolean;
   error: string | null;
@@ -13,6 +17,7 @@ interface JobsPageProps {
 
 export const JobsPage: React.FC<JobsPageProps> = ({
   jobs,
+  savedJobs,
   currentIndex,
   loading,
   error,
@@ -25,10 +30,8 @@ export const JobsPage: React.FC<JobsPageProps> = ({
 
   const handleButtonSwipe = (direction: "left" | "right") => {
     if (isAnimating) return;
-
     setIsAnimating(true);
     setSwipeDirection(direction);
-
     setTimeout(() => {
       onSwipe(direction);
       setSwipeDirection(null);
@@ -64,6 +67,20 @@ export const JobsPage: React.FC<JobsPageProps> = ({
   }
 
   const visibleJobs = jobs.slice(currentIndex, currentIndex + 3);
+
+  const saveJob = async (job: Job) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        const jobRef = doc(db, "users", user.uid, "savedJobs", job.id);
+        await setDoc(jobRef, job);
+        console.log("Trabajo guardado");
+      }
+    } catch (error) {
+      console.error("Error al guardar el trabajo:", error);
+    }
+  };
 
   return (
     <div className="fixed inset-x-0 top-[4rem] bottom-[4rem] overflow-hidden py-6 px-4 sm:px-6">
@@ -107,7 +124,12 @@ export const JobsPage: React.FC<JobsPageProps> = ({
                 <X className="w-8 h-8 text-white" />
               </button>
               <button
-                onClick={() => handleButtonSwipe("right")}
+                onClick={() => {
+                  if (visibleJobs.length > 0) {
+                    saveJob(visibleJobs[0]); // Se pasa el primer job visible
+                    handleButtonSwipe("right");
+                  }
+                }}
                 disabled={isAnimating}
                 className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Guardar"
