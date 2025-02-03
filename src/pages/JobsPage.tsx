@@ -34,6 +34,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
     setSwipeDirection(direction);
     setTimeout(() => {
       onSwipe(direction);
+      saveJob(visibleJobs[0]);
       setSwipeDirection(null);
       setIsAnimating(false);
     }, 300);
@@ -108,6 +109,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
                       onSwipe={isTop ? onSwipe : () => {}}
                       isActive={isTop && !isAnimating}
                       forcedSwipe={isTop ? swipeDirection : null}
+                      saveJob={saveJob}
                     />
                   </div>
                 );
@@ -126,7 +128,6 @@ export const JobsPage: React.FC<JobsPageProps> = ({
               <button
                 onClick={() => {
                   if (visibleJobs.length > 0) {
-                    saveJob(visibleJobs[0]); // Se pasa el primer job visible
                     handleButtonSwipe("right");
                   }
                 }}
