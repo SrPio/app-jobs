@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Job } from "../types";
-import { Building2, ExternalLink } from "lucide-react";
+import { Building2, ExternalLink, X } from "lucide-react"; // X de Lucide
 import { db } from "../firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 interface SavedJobsPageProps {
@@ -16,6 +16,8 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
 }) => {
   const [savedJobs, setSavedJobs] = useState<Job[]>([]);
   const [showToast, setShowToast] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
+  const [jobToDelete, setJobToDelete] = useState<Job | null>(null); // Empleo a eliminar
 
   useEffect(() => {
     const fetchSavedJobs = async () => {
@@ -51,6 +53,30 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
       }, 5000);
     }
   }, [showToast]);
+
+  const handleDeleteJob = async () => {
+    if (jobToDelete) {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        try {
+          // Eliminar el empleo de Firebase
+          await deleteDoc(
+            doc(db, "users", user.uid, "savedJobs", jobToDelete.id)
+          );
+          setSavedJobs(savedJobs.filter((job) => job.id !== jobToDelete.id)); // Eliminarlo del estado
+          setIsModalOpen(false); // Cerrar el modal
+        } catch (error) {
+          console.error("Error al eliminar el empleo:", error);
+        }
+      } else {
+        // Si no hay usuario logueado, solo eliminamos el empleo del estado local
+        setSavedJobs(savedJobs.filter((job) => job.id !== jobToDelete.id));
+        setIsModalOpen(false); // Cerrar el modal
+      }
+    }
+  };
 
   if (!savedJobs || savedJobs.length === 0) {
     return (
@@ -115,10 +141,9 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
         Empleos Guardados ({savedJobs.length})
       </h2>
       <div className="grid grid-cols-1 gap-4">
-        {savedJobs.map((job, index) => (
-          <button
-            key={`${job.id}-${index}`}
-            onClick={() => onJobClick(job.redirect_url)}
+        {savedJobs.map((job) => (
+          <div
+            key={job.id}
             className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all w-full text-left group"
           >
             <div className="flex items-center gap-4">
@@ -150,10 +175,58 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
                   </p>
                 )}
               </div>
+              <button
+                onClick={() => {
+                  setJobToDelete(job); // Set job to delete
+                  setIsModalOpen(true); // Open modal
+                }}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-          </button>
+          </div>
         ))}
       </div>
+
+      {/* Modal de confirmación */}
+      {isModalOpen && (
+        <div
+          id="popup-modal"
+          className="fixed top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        >
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-96">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-medium text-gray-800">
+                Confirmación
+              </h3>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="mt-4">
+              ¿Estás seguro de que deseas eliminar este empleo?
+            </p>
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                onClick={handleDeleteJob}
+                className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
+              >
+                Sí, eliminar
+              </button>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg"
+              >
+                No, cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
