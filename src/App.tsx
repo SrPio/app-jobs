@@ -108,7 +108,12 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
             <SearchNav onSearch={handleSearch} />
             <div className="max-w-md mx-auto pb-20 pt-16">
@@ -122,6 +127,7 @@ function App() {
                       loading={loading}
                       error={error}
                       onSwipe={handleSwipe}
+                      savedJobs={savedJobs}
                     />
                   }
                 />

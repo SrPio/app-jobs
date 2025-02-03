@@ -94,7 +94,7 @@ export const Card: React.FC<CardProps> = ({
     },
     trackMouse: true,
     trackTouch: true,
-    preventDefaultTouchmoveEvent: true,
+    preventScrollOnSwipe: true,
     delta: 100,
   });
 
