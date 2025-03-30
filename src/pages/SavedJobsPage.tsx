@@ -4,6 +4,7 @@ import { Building2, ExternalLink, X } from "lucide-react"; // X de Lucide
 import { db } from "../firebase";
 import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SavedJobsPageProps {
   onJobClick: (url: string) => void;
@@ -61,20 +62,19 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
 
       if (user) {
         try {
-          // Eliminar el empleo de Firebase
           await deleteDoc(
             doc(db, "users", user.uid, "savedJobs", jobToDelete.id)
           );
-          setSavedJobs(savedJobs.filter((job) => job.id !== jobToDelete.id)); // Eliminarlo del estado
-          setIsModalOpen(false); // Cerrar el modal
         } catch (error) {
           console.error("Error al eliminar el empleo:", error);
         }
-      } else {
-        // Si no hay usuario logueado, solo eliminamos el empleo del estado local
-        setSavedJobs(savedJobs.filter((job) => job.id !== jobToDelete.id));
-        setIsModalOpen(false); // Cerrar el modal
       }
+
+      // Animación fluida cuando se elimina un empleo
+      setSavedJobs((prevJobs) =>
+        prevJobs.filter((job) => job.id !== jobToDelete.id)
+      );
+      setIsModalOpen(false);
     }
   };
 
@@ -141,52 +141,66 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
         Empleos Guardados ({savedJobs.length})
       </h2>
       <div className="grid grid-cols-1 gap-4">
-        {savedJobs.map((job) => (
-          <div
-            key={job.id}
-            className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all w-full text-left group"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                {job.company_logo ? (
-                  <img
-                    src={job.company_logo}
-                    alt={job.company}
-                    className="w-12 h-12 object-contain"
-                  />
-                ) : (
-                  <Building2 className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-                )}
-              </div>
-              <div className="flex-grow">
-                <h3 className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 flex items-center gap-2">
-                  {job.title}
-                  <ExternalLink className="w-4 h-4" />
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {job.company}
-                </p>
-                <p className="text-gray-500 dark:text-gray-500 text-sm">
-                  {job.location}
-                </p>
-                {job.salary && (
-                  <p className="text-green-600 dark:text-green-400 font-medium text-sm mt-1">
-                    {job.salary}
+        <AnimatePresence>
+          {savedJobs.map((job) => (
+            <motion.div
+              key={job.id}
+              layout
+              drag
+              dragElastic={0.2}
+              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+              onDragEnd={(event, info) => {
+                event.target.style.transform = "translate(0px, 0px)";
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 8,
+              }}
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-grab active:cursor-grabbing" // 🔥 Aquí la magia
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                  {job.company_logo ? (
+                    <img
+                      src={job.company_logo}
+                      alt={job.company}
+                      className="w-12 h-12 object-contain"
+                    />
+                  ) : (
+                    <Building2 className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                  )}
+                </div>
+                <div className="flex-grow">
+                  <h3 className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 flex items-center gap-2">
+                    {job.title}
+                    <ExternalLink className="w-4 h-4" />
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {job.company}
                   </p>
-                )}
+                  <p className="text-gray-500 dark:text-gray-500 text-sm">
+                    {job.location}
+                  </p>
+                  {job.salary && (
+                    <p className="text-green-600 dark:text-green-400 font-medium text-sm mt-1">
+                      {job.salary}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    setJobToDelete(job);
+                    setIsModalOpen(true);
+                  }}
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  setJobToDelete(job); // Set job to delete
-                  setIsModalOpen(true); // Open modal
-                }}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        ))}
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
 
       {/* Modal de confirmación */}
@@ -195,19 +209,19 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
           id="popup-modal"
           className="fixed top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         >
-          <div className="relative bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 transition-colors">
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-medium text-gray-800">
+              <h3 className="text-xl font-medium text-gray-800 dark:text-white">
                 Confirmación
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <p className="mt-4">
+            <p className="mt-4 text-gray-700 dark:text-gray-300">
               ¿Estás seguro de que deseas eliminar este empleo?
             </p>
             <div className="mt-6 flex justify-end gap-4">
@@ -219,7 +233,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
               </button>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg"
+                className="px-4 py-2 text-gray-600 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-lg"
               >
                 No, cancelar
               </button>

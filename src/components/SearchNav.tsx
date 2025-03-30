@@ -25,10 +25,12 @@ export const SearchNav: React.FC<SearchNavProps> = ({ onSearch }) => {
     <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-50 transition-colors">
       <div className="w-full max-w-3xl mx-auto px-4">
         <div className="h-16 flex items-center">
-          <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-              Job Finder
-            </h1>
+          <div className="flex-shrink-0 h-10">
+            <img
+              src="../../public/icons/Jooblin Logo.svg"
+              alt="Logo Jooblin"
+              className="h-full w-auto"
+            />
           </div>
 
           <div className="flex items-center gap-2 ml-auto">
