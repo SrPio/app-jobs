@@ -34,7 +34,9 @@ export const JobsPage: React.FC<JobsPageProps> = ({
     setSwipeDirection(direction);
     setTimeout(() => {
       onSwipe(direction);
-      saveJob(visibleJobs[0]);
+      if (direction === "right") {
+        saveJob(visibleJobs[0]);
+      }
       setSwipeDirection(null);
       setIsAnimating(false);
     }, 300);
