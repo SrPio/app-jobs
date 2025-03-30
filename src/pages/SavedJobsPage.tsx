@@ -128,7 +128,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
               <div className="flex-grow">
                 <button
                   onClick={() => onJobClick(job.redirect_url)}
-                  className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 flex items-center gap-2 focus:outline-none hover:underline"
+                  className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-[#00bbaa] dark:group-hover:text-[#00bbaa] flex items-center justify-start text-left gap-2 focus:outline-none hover:underline"
                 >
                   {job.title}
                   <ExternalLink className="w-4 h-4" />

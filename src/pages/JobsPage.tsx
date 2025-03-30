@@ -58,7 +58,8 @@ export const JobsPage: React.FC<JobsPageProps> = ({
           <p className="text-red-500 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            className="bg-[#00bbaa]
+ text-white px-4 py-2 rounded-lg hover:bg-[#00bbaa]"
           >
             Reintentar
           </button>

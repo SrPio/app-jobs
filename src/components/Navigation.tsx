@@ -12,7 +12,7 @@ export const Navigation: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
                 isActive
-                  ? "text-blue-500 dark:text-blue-400"
+                  ? "text-[#00bbaa] dark:text-[#00bbaa]"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }
@@ -26,7 +26,7 @@ export const Navigation: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
                 isActive
-                  ? "text-blue-500 dark:text-blue-400"
+                  ? "text-[#00bbaa] dark:text-[#00bbaa]"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }
@@ -40,7 +40,7 @@ export const Navigation: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
                 isActive
-                  ? "text-blue-500 dark:text-blue-400"
+                  ? "text-[#00bbaa] dark:text-[#00bbaa]"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }

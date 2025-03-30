@@ -11,6 +11,7 @@ import { signInWithGoogle, logout } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { AuthProvider } from "./context/AuthContext";
+import { User } from "firebase/auth";
 
 function App() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -19,7 +20,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("software developer");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -116,7 +117,7 @@ function App() {
         >
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
             <SearchNav onSearch={handleSearch} />
-            <div className="max-w-md mx-auto pb-20 pt-16 h-[100dvh]">
+            <div className="max-w-screen-lg mx-auto pb-20 pt-16 h-[100dvh]">
               <Routes>
                 <Route
                   path="/"

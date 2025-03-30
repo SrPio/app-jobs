@@ -18,7 +18,7 @@ export const ProfilePage: React.FC = () => {
                 className="w-24 h-24 rounded-full"
               />
             ) : (
-              <User className="w-12 h-12 text-blue-500 dark:text-blue-400" />
+              <User className="w-12 h-12 text-[#00bbaa] dark:text-[#00bbaa]" />
             )}
           </div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -46,7 +46,7 @@ export const ProfilePage: React.FC = () => {
           onClick={user ? logout : signInWithGoogle}
           className={`w-full mt-6 py-2 px-4 rounded-lg flex items-center justify-center transition-colors ${
             user
-              ? "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+              ? "bg-[#00bbaa] text-white hover:bg-[#00bbaa] dark:bg-[#00bbaa] dark:hover:bg-[#009988]"
               : "bg-gray-100 text-gray-600 dark:text-gray-300 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
           }`}
         >
