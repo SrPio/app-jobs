@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 
 interface JobsPageProps {
   jobs: Job[];
-  savedJobs: Job[]; // Añadimos la propiedad savedJobs
+  savedJobs: Job[];
   currentIndex: number;
   loading: boolean;
   error: string | null;

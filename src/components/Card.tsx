@@ -11,7 +11,6 @@ interface CardProps {
   saveJob: (job: Job) => Promise<void>;
 }
 
-// Array of gradient combinations
 const gradients = [
   "bg-gradient-to-r from-violet-400 via-pink-500 to-orange-500",
   "bg-gradient-to-r from-emerald-400 via-teal-500 to-blue-500",
@@ -32,7 +31,6 @@ export const Card: React.FC<CardProps> = ({
   const [rotation, setRotation] = React.useState(0);
   const [isLeaving, setIsLeaving] = React.useState(false);
 
-  // Generate a consistent gradient for each job based on its ID
   const gradientIndex =
     parseInt(job.id.replace(/\D/g, ""), 10) % gradients.length;
   const gradient = gradients[gradientIndex];

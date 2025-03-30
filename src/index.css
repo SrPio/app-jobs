@@ -3,12 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
-    /* Oculta la scrollbar en navegadores que lo soporten */
     .scrollbar-hidden::-webkit-scrollbar {
       display: none;
     }
   
-    /* Estiliza la scrollbar */
     .scrollbar-thin::-webkit-scrollbar {
       width: 10px;
       height: 4px;
@@ -30,9 +28,8 @@
       background: transparent;
     }
   
-    /* 🎨 Estilos en modo oscuro */
     .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-      background: #1f2937; /* bg-gray-800 */
+      background: #1f2937;
 
       border-top: 20px solid transparent;
       border-bottom: 20px solid transparent;

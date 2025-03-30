@@ -70,7 +70,6 @@ const saveJob = async (userId: string, job: any) => {
 
 // Función para obtener los empleos guardados de un usuario
 const getSavedJobs = async (userId: string) => {
-  // userId es de tipo string
   try {
     const querySnapshot = await getDocs(
       collection(db, `users/${userId}/savedJobs`)
@@ -84,7 +83,6 @@ const getSavedJobs = async (userId: string) => {
 
 // Función para eliminar un empleo guardado
 const deleteJob = async (userId: string, jobId: string) => {
-  // userId y jobId son de tipo string
   try {
     await deleteDoc(doc(db, `users/${userId}/savedJobs/${jobId}`));
   } catch (error) {

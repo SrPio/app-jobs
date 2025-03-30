@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Job } from "../types";
-import { Building2, ExternalLink, X } from "lucide-react"; // X de Lucide
+import { Building2, ExternalLink, X } from "lucide-react";
 import { db } from "../firebase";
 import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -17,8 +17,8 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
 }) => {
   const [savedJobs, setSavedJobs] = useState<Job[]>([]);
   const [showToast, setShowToast] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
-  const [jobToDelete, setJobToDelete] = useState<Job | null>(null); // Empleo a eliminar
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [jobToDelete, setJobToDelete] = useState<Job | null>(null);
 
   useEffect(() => {
     const fetchSavedJobs = async () => {
@@ -40,7 +40,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
         }
       } else {
         setSavedJobs(jobs);
-        setShowToast(true); // Mostrar el toast si no está logueado
+        setShowToast(true);
       }
     };
 
@@ -70,7 +70,6 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
         }
       }
 
-      // Animación fluida cuando se elimina un empleo
       setSavedJobs((prevJobs) =>
         prevJobs.filter((job) => job.id !== jobToDelete.id)
       );

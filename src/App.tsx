@@ -26,7 +26,7 @@ function App() {
       setUser(user);
     });
 
-    return () => unsubscribe(); // Limpieza del listener al desmontar
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
