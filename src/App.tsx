@@ -116,7 +116,7 @@ function App() {
         >
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
             <SearchNav onSearch={handleSearch} />
-            <div className="max-w-md mx-auto pb-20 pt-16">
+            <div className="max-w-md mx-auto pb-20 pt-16 h-[100dvh]">
               <Routes>
                 <Route
                   path="/"

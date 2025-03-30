@@ -1,6 +1,6 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Home, BookmarkCheck, User } from 'lucide-react';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { Home, BookmarkCheck, User } from "lucide-react";
 
 export const Navigation: React.FC = () => {
   return (
@@ -11,31 +11,37 @@ export const Navigation: React.FC = () => {
             to="/"
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
-                isActive ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                isActive
+                  ? "text-blue-500 dark:text-blue-400"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }
           >
             <Home className="w-6 h-6" />
             <span className="text-xs">Empleos</span>
           </NavLink>
-          
+
           <NavLink
             to="/saved"
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
-                isActive ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                isActive
+                  ? "text-blue-500 dark:text-blue-400"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }
           >
             <BookmarkCheck className="w-6 h-6" />
             <span className="text-xs">Guardados</span>
           </NavLink>
-          
+
           <NavLink
             to="/profile"
             className={({ isActive }) =>
               `flex flex-col items-center space-y-1 ${
-                isActive ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                isActive
+                  ? "text-blue-500 dark:text-blue-400"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               }`
             }
           >
