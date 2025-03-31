@@ -29,7 +29,7 @@ Follow these steps to run the project on your local environment:
 ### 1️⃣ Clone the repository
 
 ```sh
-git clone [REPOSITORY_URL]
+git clone https://github.com/SrPio/app-jobs.git
 cd jooblin
 ```
 
