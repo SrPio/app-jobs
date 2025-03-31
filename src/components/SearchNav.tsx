@@ -27,7 +27,7 @@ export const SearchNav: React.FC<SearchNavProps> = ({ onSearch }) => {
         <div className="h-16 flex items-center">
           <div className="flex-shrink-0 h-10">
             <img
-              src="../../public/icons/Jooblin Logo.svg"
+              src="/icons/Jooblin Logo.svg"
               alt="Logo Jooblin"
               className="h-full w-auto"
             />
