@@ -88,82 +88,76 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
   }
 
   return (
-    <div className="w-full h-full overflow-y-auto space-y-5 py-4 px-4 scrollbar-thin">
-      <AnimatePresence>
-        {savedJobs.map((job) => (
-          <motion.div
-            key={job.id}
-            layout
-            drag
-            dragElastic={0.2}
-            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-            onDragEnd={(event, info) => {
-              const target = event.target as HTMLElement;
-              if (target) {
-                target.style.transform = "translate(0px, 0px)";
-              }
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 15,
-            }}
-            className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md cursor-grab active:cursor-grabbing"
-          >
-            <div className="flex items-center gap-4 z-50">
-              <button
-                onClick={() => onJobClick(job.redirect_url)}
-                className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0 focus:outline-none group"
-              >
-                {job.company_logo ? (
-                  <img
-                    src={job.company_logo}
-                    alt={job.company}
-                    className="w-12 h-12 object-contain"
-                  />
-                ) : (
-                  <Building2 className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-                )}
-              </button>
-              <div className="flex-grow">
+    <div className="w-full h-full overflow-y-auto py-4 px-4 scrollbar-thin">
+      <div className="space-y-5">
+        <AnimatePresence>
+          {savedJobs.map((job) => (
+            <motion.div
+              key={job.id}
+              layout
+              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 15,
+              }}
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md"
+            >
+              <div className="flex items-center gap-4 z-50">
                 <button
                   onClick={() => onJobClick(job.redirect_url)}
-                  className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-[#00bbaa] dark:group-hover:text-[#00bbaa] flex items-center justify-start text-left gap-2 focus:outline-none hover:underline"
+                  className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0 focus:outline-none group"
                 >
-                  {job.title}
-                  <ExternalLink className="w-4 h-4" />
+                  {job.company_logo ? (
+                    <img
+                      src={job.company_logo}
+                      alt={job.company}
+                      className="w-12 h-12 object-contain"
+                    />
+                  ) : (
+                    <Building2 className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                  )}
                 </button>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {job.company}
-                </p>
-                <p className="text-gray-500 dark:text-gray-500 text-sm">
-                  {job.location}
-                </p>
-                {job.salary && (
-                  <p className="text-green-600 dark:text-green-400 font-medium text-sm mt-1">
-                    {job.salary}
+                <div className="flex-grow">
+                  <button
+                    onClick={() => onJobClick(job.redirect_url)}
+                    className="font-semibold text-lg text-gray-800 dark:text-white group-hover:text-[#00bbaa] dark:group-hover:text-[#00bbaa] flex items-center justify-start text-left gap-2 focus:outline-none hover:underline"
+                  >
+                    {job.title}
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {job.company}
                   </p>
-                )}
+                  <p className="text-gray-500 dark:text-gray-500 text-sm">
+                    {job.location}
+                  </p>
+                  {job.salary && (
+                    <p className="text-green-600 dark:text-green-400 font-medium text-sm mt-1">
+                      {job.salary}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    setJobToDelete(job);
+                    setIsModalOpen(true);
+                  }}
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  setJobToDelete(job);
-                  setIsModalOpen(true);
-                }}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </AnimatePresence>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
 
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
             id="popup-modal"
-            className="fixed top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 -mt-5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
