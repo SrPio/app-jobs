@@ -5,6 +5,7 @@ import { Building2, Heart, X } from "lucide-react";
 import { db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 interface JobsPageProps {
   jobs: Job[];
@@ -27,6 +28,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
     "left" | "right" | null
   >(null);
   const [isAnimating, setIsAnimating] = React.useState(false);
+  const { t } = useTranslation();
 
   const handleButtonSwipe = (direction: "left" | "right") => {
     if (isAnimating) return;
@@ -47,7 +49,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
           <Building2 className="w-12 h-12 mx-auto mb-4 text-gray-400 animate-pulse" />
-          <p className="text-gray-600">Cargando empleos...</p>
+          <p className="text-gray-600">{t("loadingJobs")}</p>
         </div>
       </div>
     );
@@ -63,7 +65,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
             className="bg-[#00bbaa]
  text-white px-4 py-2 rounded-lg hover:bg-[#00bbaa]"
           >
-            Reintentar
+            {t("retry")}
           </button>
         </div>
       </div>
@@ -144,9 +146,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({
           </>
         ) : (
           <div className="flex items-center justify-center h-full">
-            <p className="text-xl text-gray-500">
-              No hay más empleos disponibles
-            </p>
+            <p className="text-xl text-gray-500">{t("noMoreJobs")}</p>
           </div>
         )}
       </div>

@@ -5,6 +5,7 @@ import { db } from "../firebase";
 import { collection, getDocs, query, doc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface SavedJobsPageProps {
   onJobClick: (url: string) => void;
@@ -19,6 +20,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
   const [showToast, setShowToast] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [jobToDelete, setJobToDelete] = useState<Job | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchSavedJobs = async () => {
@@ -80,9 +82,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
   if (!savedJobs || savedJobs.length === 0) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
-        <p className="text-gray-500 dark:text-gray-400">
-          No tienes empleos guardados
-        </p>
+        <p className="text-gray-500 dark:text-gray-400">{t("noSavedJobs")}</p>
       </div>
     );
   }
@@ -178,7 +178,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
             >
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-medium text-gray-800 dark:text-white">
-                  Confirmación
+                  {t("confirmation")}
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
@@ -188,20 +188,20 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
                 </button>
               </div>
               <p className="mt-4 text-gray-700 dark:text-gray-300">
-                ¿Estás seguro de que deseas eliminar este empleo?
+                {t("confirmDelete")}
               </p>
               <div className="mt-6 flex justify-end gap-4">
                 <button
                   onClick={handleDeleteJob}
                   className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
                 >
-                  Sí, eliminar
+                  {t("yesDelete")}
                 </button>
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 text-gray-600 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-lg"
                 >
-                  No, cancelar
+                  {t("noCancel")}
                 </button>
               </div>
             </motion.div>
@@ -234,9 +234,7 @@ export const SavedJobsPage: React.FC<SavedJobsPageProps> = ({
                 </svg>
                 <span className="sr-only">Warning icon</span>
               </div>
-              <div className="text-sm font-normal">
-                No se están guardando empleos hasta que inicies sesión.
-              </div>
+              <div className="text-sm font-normal">{t("notSavingJobs")}</div>
               <button
                 type="button"
                 className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg 

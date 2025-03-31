@@ -1,8 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Home, BookmarkCheck, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const Navigation: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 transition-colors">
       <div className="max-w-md mx-auto px-4">
@@ -18,7 +21,7 @@ export const Navigation: React.FC = () => {
             }
           >
             <Home className="w-6 h-6" />
-            <span className="text-xs">Empleos</span>
+            <span className="text-xs">{t("jobs")}</span>
           </NavLink>
 
           <NavLink
@@ -32,7 +35,7 @@ export const Navigation: React.FC = () => {
             }
           >
             <BookmarkCheck className="w-6 h-6" />
-            <span className="text-xs">Guardados</span>
+            <span className="text-xs">{t("saved")}</span>
           </NavLink>
 
           <NavLink
@@ -46,7 +49,7 @@ export const Navigation: React.FC = () => {
             }
           >
             <User className="w-6 h-6" />
-            <span className="text-xs">Perfil</span>
+            <span className="text-xs">{t("profile")}</span>
           </NavLink>
         </div>
       </div>

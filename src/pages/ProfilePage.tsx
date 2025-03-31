@@ -2,9 +2,11 @@ import React from "react";
 import { User, Mail } from "lucide-react";
 import { auth, signInWithGoogle, logout } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useTranslation } from "react-i18next";
 
 export const ProfilePage: React.FC = () => {
   const [user] = useAuthState(auth);
+  const { t } = useTranslation();
 
   return (
     <div className="p-4">
@@ -22,7 +24,7 @@ export const ProfilePage: React.FC = () => {
             )}
           </div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            {user ? user.displayName : "Tu Perfil"}
+            {user ? user.displayName : `${t("profile_title")}`}
           </h2>
         </div>
 
@@ -32,7 +34,7 @@ export const ProfilePage: React.FC = () => {
               <Mail className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Email
+                  {t("email")}
                 </p>
                 <p className="font-medium text-gray-800 dark:text-white">
                   {user.email}
@@ -57,7 +59,7 @@ export const ProfilePage: React.FC = () => {
               className="w-6 h-6 mr-2"
             />
           )}
-          {user ? "Cerrar sesión" : "Iniciar sesión con Google"}
+          {user ? `${t("signOut")}` : `${t("signInGoogle")}`}
         </button>
       </div>
     </div>
